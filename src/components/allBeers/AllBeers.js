@@ -8,7 +8,7 @@ import Search from '../search/Search';
 export default class AllBeers extends Component {
   state = {
     allBeers: [],
-    visiblebeers: [],
+    visibleBeers: [],
   };
 
   componentDidMount() {
@@ -21,21 +21,20 @@ export default class AllBeers extends Component {
     });
   }
 
-  
+  filterResults = (searchTerm) => {
+    const copy = [...this.state.allBeers];
+    const filteredResults = copy.filter((beerObject) => {
+      return beerObject.name.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+    this.setState({ visibleBeers: filteredResults });
+  };
   render() {
-    this.filterResults = (searchTerm) => {
-      const copy = [...this.state.allBeers];
-      const filteredResults = copy.filter((beerObject) => {
-        return beerObject.name.toLowerCase().includes(searchTerm.toLowerCase());
-      });
-      this.setState({ visiblebeers: filteredResults });
-    };
     return (
       <>
         <Header />
         <Search executeSearch={this.filterResults} />
         <div id="all-beers-main">
-          {this.state.visiblebeers.map((beer) => {
+          {this.state.visibleBeers.map((beer) => {
             return (
               <BeerCard {...beer} key={beer._id} imageUrl={beer.image_url} />
             );
